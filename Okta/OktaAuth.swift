@@ -28,7 +28,7 @@ public struct OktaAuthorization {
                 // Build the Authentication request
                 var request: OIDAuthorizationRequest
 
-                if let state = config.first(where: { $0.key == "state" } )?.value {
+                if let state = config.filter( { $0.key == "state" } ).first?.value as? String {
                     var newConfig = config.filter { $0.key != "state" }
                     var finalState = state
                     if let generatedState = OIDAuthorizationRequest.generateState() {
@@ -57,7 +57,6 @@ public struct OktaAuthorization {
                         responseType: OIDResponseTypeCode,
                         additionalParameters: Utils.parseAdditionalParams(config))
                 }
-
 
                 // Start the authorization flow
                 let externalUserAgent = OktaExternalUserAgentIOS(presenting: view)
