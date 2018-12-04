@@ -25,14 +25,37 @@ public struct OktaAuthorization {
             self.getMetadataConfig(URL(string: issuer))
             .then { oidConfig in
                 // Build the Authentication request
-                let request = OIDAuthorizationRequest(
-                           configuration: oidConfig,
-                                clientId: clientId,
-                                  scopes: Utils.scrubScopes(config["scopes"]),
-                             redirectURL: URL(string: redirectUri)!,
-                            responseType: OIDResponseTypeCode,
-                    additionalParameters: Utils.parseAdditionalParams(config)
-                )
+                var request: OIDAuthorizationRequest
+
+                if let state = config.filter( { $0.key == "state" } ).first?.value as? String {
+                    var newConfig = config.filter { $0.key != "state" }
+                    var finalState = state
+                    if let generatedState = OIDAuthorizationRequest.generateState() {
+                        finalState =  state + "&" + generatedState
+                    }
+                    let codeVerifier = OIDAuthorizationRequest.generateCodeVerifier()
+                    request = OIDAuthorizationRequest(
+                        configuration: oidConfig,
+                        clientId: clientId,
+                        clientSecret: nil,
+                        scope: OIDScopeUtilities.scopes(with: Utils.scrubScopes(config["scopes"])),
+                        redirectURL: URL(string: redirectUri)!,
+                        responseType: OIDResponseTypeCode,
+                        state: finalState,
+                        codeVerifier: codeVerifier,
+                        codeChallenge: OIDAuthorizationRequest.codeChallengeS256(forVerifier: codeVerifier),
+                        codeChallengeMethod: OIDOAuthorizationRequestCodeChallengeMethodS256,
+                        additionalParameters: Utils.parseAdditionalParams(newConfig))
+                }
+                else {
+                    request = OIDAuthorizationRequest(
+                        configuration: oidConfig,
+                        clientId: clientId,
+                        scopes: Utils.scrubScopes(config["scopes"]),
+                        redirectURL: URL(string: redirectUri)!,
+                        responseType: OIDResponseTypeCode,
+                        additionalParameters: Utils.parseAdditionalParams(config))
+                }
 
                 // Start the authorization flow
                 let externalUserAgent = OktaExternalUserAgentIOS(presenting: view)
