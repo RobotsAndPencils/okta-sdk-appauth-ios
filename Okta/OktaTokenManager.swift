@@ -32,6 +32,16 @@ open class OktaTokenManager: NSObject, NSCoding {
             return token
         }
     }
+    
+    open var accessTokenExpiry: Date? {
+        get {
+            guard let tokenResponse = self.authState.lastTokenResponse,
+                let tokenExp = tokenResponse.accessTokenExpirationDate else {
+                    return nil
+            }
+            return tokenExp
+        }
+    }
 
     open var idToken: String? {
         // Return the known idToken if it is valid
