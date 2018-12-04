@@ -55,11 +55,6 @@ public func isAuthenticated() -> Bool {
     return false
 }
 
-public func clear() {
-    // Clear auth state
-    tokens?.clear()
-}
-
 public func introspect() -> Introspect {
     // Check the validity of the tokens
     return Introspect()
@@ -80,8 +75,13 @@ public func getUser(_ callback: @escaping ([String:Any]?, OktaError?) -> Void) {
     _ = UserInfo(token: tokens?.accessToken) { response, error in callback(response, error) }
 }
 
+public func clear() {
+    // Clear auth state
+    tokens?.clear()
+}
+
 public func resume(_ url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
-    if let authorizationFlow = currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url){
+    if let authorizationFlow = currentAuthorizationFlow, authorizationFlow.resumeAuthorizationFlow(with: url){
         currentAuthorizationFlow = nil
         return true
     }
