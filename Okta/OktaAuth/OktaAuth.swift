@@ -28,10 +28,10 @@ public struct OktaAuthorization {
                 var request: OIDAuthorizationRequest
 
                 if let state = config.first(where: { $0.key == "state" } )?.value {
-                    var newConfig = config.filter { $0.key != "state" }
+                    let newConfig = config.filter { $0.key != "state" } .filter { $0.key != "logoutRedirectUri" }
                     var finalState = state
                     if let generatedState = OIDAuthorizationRequest.generateState() {
-                        finalState =  state + "&" + generatedState
+                        finalState = generatedState + "&" + state
                     }
                     let codeVerifier = OIDAuthorizationRequest.generateCodeVerifier()
                     request = OIDAuthorizationRequest(
@@ -42,6 +42,7 @@ public struct OktaAuthorization {
                         redirectURL: redirectUri,
                         responseType: OIDResponseTypeCode,
                         state: finalState,
+                        nonce: OIDAuthorizationRequest.generateState(),
                         codeVerifier: codeVerifier,
                         codeChallenge: OIDAuthorizationRequest.codeChallengeS256(forVerifier: codeVerifier),
                         codeChallengeMethod: OIDOAuthorizationRequestCodeChallengeMethodS256,
@@ -70,7 +71,7 @@ public struct OktaAuthorization {
 
                         // Set the local cache and write to storage
                         self.storeAuthState(tokenManager)
-                        
+                        OktaAuth.tokens = tokenManager
                         return resolve(tokenManager)
                     } catch let error {
                         return reject(error)
@@ -95,10 +96,16 @@ public struct OktaAuthorization {
 
             self.getMetadataConfig(URL(string: issuer))
             .then { oidConfig in
-                let request = OIDEndSessionRequest(
+                var request: OIDEndSessionRequest
+                var state: String
+
+                state = OIDAuthorizationRequest.generateState()!
+
+                request = OIDEndSessionRequest(
                     configuration: oidConfig,
                     idTokenHint: idToken,
                     postLogoutRedirectURL: logoutRedirectURL,
+                    state: state,
                     additionalParameters: nil
                 )
 

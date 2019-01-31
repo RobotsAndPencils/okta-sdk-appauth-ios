@@ -74,7 +74,7 @@ public func clear() {
 }
 
 public func resume(_ url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
-    if let authorizationFlow = currentAuthorizationFlow, authorizationFlow.resumeAuthorizationFlow(with: url){
+    if let authorizationFlow = currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url){
         currentAuthorizationFlow = nil
         return true
     }
