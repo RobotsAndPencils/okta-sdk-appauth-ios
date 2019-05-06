@@ -9,10 +9,12 @@ Integrate your native app with Okta using the AppAuth library.
   s.homepage         = 'https://github.com/okta/okta-sdk-appauth-ios'
   s.license          = { :type => 'APACHE2', :file => 'LICENSE' }
   s.authors          = { "Okta Developers" => "developer@okta.com"}
-  s.source           = { :git => 'https://github.com/okta/okta-sdk-appauth-ios.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/RobotsAndPencils/okta-sdk-appauth-ios.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
   s.source_files = 'Okta/**/*'
   s.dependency 'OktaAppAuth', '= 1.0.0.beta-okta'
   s.dependency 'HydraAsync', '~> 1.2.1'
+
+  s.ios.weak_frameworks   = "AuthenticationServices"
 end
