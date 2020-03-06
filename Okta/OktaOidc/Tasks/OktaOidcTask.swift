@@ -10,9 +10,9 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-class OktaOidcTask<T> {
-    let config: OktaOidcConfig
-    let oktaAPI: OktaOidcHttpApiProtocol
+open class OktaOidcTask<T> {
+    public let config: OktaOidcConfig
+    public let oktaAPI: OktaOidcHttpApiProtocol
  
     init(config: OktaOidcConfig, oktaAPI: OktaOidcHttpApiProtocol) {
         self.config = config

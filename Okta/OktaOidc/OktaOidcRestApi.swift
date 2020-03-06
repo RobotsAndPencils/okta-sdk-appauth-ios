@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-protocol OktaOidcHttpApiProtocol {
+public protocol OktaOidcHttpApiProtocol {
     typealias OktaApiSuccessCallback = ([String: Any]?) -> Void
     typealias OktaApiErrorCallback = (OktaOidcError) -> Void
     
@@ -43,7 +43,7 @@ protocol OktaOidcHttpApiProtocol {
 }
 
 extension OktaOidcHttpApiProtocol {
-    func post(_ url: URL,
+    public func post(_ url: URL,
               headers: [String: String]?,
               postString: String?,
               onSuccess: @escaping OktaApiSuccessCallback,
@@ -53,7 +53,7 @@ extension OktaOidcHttpApiProtocol {
         return self.post(url, headers: headers, postData: data, onSuccess: onSuccess, onError: onError)
     }
 
-    func post(_ url: URL,
+    public func post(_ url: URL,
               headers: [String: String]?,
               postJson: [String: Any]?,
               onSuccess: @escaping OktaApiSuccessCallback,
@@ -63,7 +63,7 @@ extension OktaOidcHttpApiProtocol {
         return self.post(url, headers: headers, postData: data, onSuccess: onSuccess, onError: onError)
     }
 
-    func post(_ url: URL,
+    public func post(_ url: URL,
               headers: [String: String]?,
               postData: Data?,
               onSuccess: @escaping OktaApiSuccessCallback,
@@ -73,7 +73,7 @@ extension OktaOidcHttpApiProtocol {
         return self.fireRequest(request, onSuccess: onSuccess, onError: onError)
     }
 
-    func get(_ url: URL,
+    public func get(_ url: URL,
              headers: [String: String]?,
              onSuccess: @escaping OktaApiSuccessCallback,
              onError: @escaping OktaApiErrorCallback) {
@@ -82,7 +82,7 @@ extension OktaOidcHttpApiProtocol {
         return self.fireRequest(request, onSuccess: onSuccess, onError: onError)
     }
     
-    func setupRequest(_ url: URL,
+    public func setupRequest(_ url: URL,
                       method: String,
                       headers: [String: String]?,
                       body: Data? = nil) -> URLRequest {
@@ -99,9 +99,10 @@ extension OktaOidcHttpApiProtocol {
     }
 }
 
-class OktaOidcRestApi: OktaOidcHttpApiProtocol {
+public class OktaOidcRestApi: OktaOidcHttpApiProtocol {
+    public init() {}
 
-    func fireRequest(_ request: URLRequest,
+    public func fireRequest(_ request: URLRequest,
                      onSuccess: @escaping OktaApiSuccessCallback,
                      onError: @escaping OktaApiErrorCallback) {
         let task = OIDURLSessionProvider.session().dataTask(with: request){ data, response, error in

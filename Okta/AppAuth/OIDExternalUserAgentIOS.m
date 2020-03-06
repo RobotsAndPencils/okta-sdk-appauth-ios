@@ -68,7 +68,6 @@ NS_ASSUME_NONNULL_BEGIN
   _session = session;
   BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
-
   // iOS 12 and later, use ASWebAuthenticationSession
   if (@available(iOS 12.0, *)) {
     // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)

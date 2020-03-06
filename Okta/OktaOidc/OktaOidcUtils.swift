@@ -14,7 +14,7 @@ import UIKit
 
 open class OktaOidcUtils: NSObject {
 
-    internal class func scrubScopes(_ scopes: String?) -> [String]{
+    open class func scrubScopes(_ scopes: String?) -> [String]{
         /**
          Perform scope scrubbing here.
 

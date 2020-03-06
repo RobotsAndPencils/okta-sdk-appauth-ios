@@ -18,7 +18,7 @@ public class OktaOidc: NSObject {
     @objc public let configuration: OktaOidcConfig
     
     // Holds the browser session
-    private var currentUserSessionTask: OktaOidcUserSessionTask?
+    public var currentUserSessionTask: OktaOidcUserSessionTask?
     
     @objc public init(configuration: OktaOidcConfig? = nil) throws {
         if let config = configuration {

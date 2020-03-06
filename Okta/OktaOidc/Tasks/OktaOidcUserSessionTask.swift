@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-protocol OktaOidcUserSessionTask {
+public protocol OktaOidcUserSessionTask {
 
     var userAgentSession: OIDExternalUserAgentSession? { get }
     
@@ -18,7 +18,7 @@ protocol OktaOidcUserSessionTask {
 }
 
 extension OktaOidcUserSessionTask {
-    func resume(with url: URL) -> Bool {
+    public func resume(with url: URL) -> Bool {
         guard let userAgentSession = userAgentSession else {
             return false
         }

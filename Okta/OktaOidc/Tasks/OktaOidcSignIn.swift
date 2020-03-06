@@ -12,10 +12,10 @@
 
 import UIKit
 
-class OktaOidcSignInTask: OktaOidcTask<OIDAuthState>, OktaOidcUserSessionTask {
+public class OktaOidcSignInTask: OktaOidcTask<OIDAuthState>, OktaOidcUserSessionTask {
 
     private let presenter: UIViewController
-    private(set) var userAgentSession: OIDExternalUserAgentSession?
+    public var userAgentSession: OIDExternalUserAgentSession?
     
     init(presenter: UIViewController, config: OktaOidcConfig, oktaAPI: OktaOidcHttpApiProtocol) {
         self.presenter = presenter
